@@ -281,16 +281,11 @@ function statusBadge(r){return badge(statusKey(r));}
 function cardHTML(m){
   var r=resolve(m);
   var top='',bottom='';
-  if(m.my){
-    top='<span class="bdg b-my">MY</span>';
-  }else{
-    if(m.price) top+='<span class="bdg b-pr">+'+m.price.toLocaleString()+'원</span>';
-    if(r && r.status==='urgent') top+='<span class="bdg b-ug">긴급양도</span>';
-    if(r && r.status==='likely') bottom=upArrow(18, r.level==='strong');
-    else if(r && r.status==='new') bottom='<span class="lbl-n">N</span>';
-    else if(r && r.status==='confirm') bottom='<span class="lbl-cf">확정</span>';
-  }
-  return '<div class="mcard'+((r||m.my)?' on':'')+'" data-id="'+m.id+'">'
+  if(m.price) top+='<span class="bdg b-pr">+'+m.price.toLocaleString()+'원</span>';
+  if(r && r.status==='likely') bottom=upArrow(18, r.level==='strong');
+  else if(r && r.status==='new') bottom='<span class="lbl-n">N</span>';
+  else if(r && r.status==='confirm') bottom='<span class="lbl-cf">확정</span>';
+  return '<div class="mcard'+(r?' on':'')+'" data-id="'+m.id+'">'
     +'<div class="mtop"><span class="mtime">'+m.time+'</span><span class="mchips">'+top+'</span></div>'
     +'<div class="mvenue">'+m.venue+'</div>'
     +'<div class="mcourt">'+m.court+'</div>'
@@ -300,7 +295,7 @@ var sortMode='default';
 var sortPred={
   soon:function(m){var r=resolve(m);return !!m.price||(r&&r.status==='urgent');},
   confirmed:function(m){var r=resolve(m);return r&&r.status==='confirm';},
-  badged:function(m){var r=resolve(m);return !!resolve(m)||!!m.price||!!m.my;}
+  badged:function(m){var r=resolve(m);return (r&&(r.status==='likely'||r.status==='new'||r.status==='confirm'))||!!m.price;}
 };
 var sortLabel={soon:'시작 임박 · 긴급양도/프로모션',confirmed:'확정 매치',badged:'배지 있는 매치'};
 function renderList(onlyLikely){
@@ -385,11 +380,11 @@ function renderTable(){
     if(m.compact) tags.push('컴팩트'); if(m.league) tags.push('팀 리그'); if(m.eightvs) tags.push('8vs8'); if(m.subAvailable) tags.push('SUB');
     var tagHTML=tags.length?tags.map(function(t){return '<span class="tg">'+t+'</span>';}).join(''):'<span style="color:#B6BCC3">—</span>';
     var fb,pos;
-    if(m.my){fb='<span class="fb b-my">MY</span>';pos='<span class="pos">시간 줄(단독)</span>';}
-    else if(!r){fb='<span style="color:#B6BCC3">없음</span>';pos='';}
+    if(!r){fb='<span style="color:#B6BCC3">없음</span>';pos='';}
+    else if(r.status==='urgent'){fb='<span class="fb b-ug">긴급양도</span>';pos='<span class="pos">상세 전용</span>';}
     else{var k=statusKey(r);
-      fb=r.status==='confirm'?'<span class="fb b-cf">확정</span>':(r.status==='likely'?'<span class="fb" style="background:#FFF0E6;color:#F36F21">↗ 진행 유력</span>':(r.status==='new'?'<span class="fb" style="background:#FFE875;color:#97500F">N</span>':'<span class="fb '+STYLE[k].cls+'">'+STYLE[k].label+'</span>'));
-      pos='<span class="pos">'+(r.status==='urgent'?'시간 줄':(r.status==='confirm'?'포맷 줄':'포맷 줄'))+'</span>';}
+      fb=r.status==='confirm'?'<span class="fb b-cf">확정</span>':(r.status==='likely'?'<span class="fb" style="background:#FFF0E6;color:#F36F21">↗ 진행 유력</span>':'<span class="fb" style="background:#FFE875;color:#97500F">N</span>');
+      pos='<span class="pos">포맷 줄</span>';}
     return '<tr><td class="v">'+m.id+'</td><td>'+m.day+'</td><td>'+m.time+'</td><td class="v">'+m.venue+'</td><td>'+m.court+'</td><td class="v">'+m.grade+'</td><td>'+pct(m)+'</td><td>'+tagHTML+'</td><td>'+fb+pos+'</td></tr>';
   }).join('');
   document.getElementById('dataTable').innerHTML=head+'<tbody>'+rows+'</tbody>';
