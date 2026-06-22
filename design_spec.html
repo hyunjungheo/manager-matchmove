@@ -96,12 +96,14 @@ a.btn{display:inline-flex;align-items:center;gap:7px;background:var(--ink);color
     <tr><th>마크</th><th>의미 · 표시 방식</th></tr>
     <tr class="grouphd"><td colspan="2">▸ 우측 상단 · 시간 줄 — 거래 정보 (무채색)</td></tr>
     <tr><td><span class="bdg b-pr">+5,000원</span></td><td><span class="nm">프로모션 금액</span><br><span class="ds">추가 정산 금액. 거래 정보라 무채색 그레이.</span></td></tr>
+    <tr><td><span class="bdg b-ug">긴급양도</span></td><td><span class="nm">긴급양도</span><br><span class="ds">즉시 양도가 필요한 매치. 읽어야 하는 신호라 텍스트 유지.</span></td></tr>
+    <tr><td><span class="bdg b-my">MY</span></td><td><span class="nm">내 매치</span><br><span class="ds">매니저 본인이 잡은 매치. <strong>MY가 뜨면 다른 모든 배지를 숨기고 단독 노출</strong>.</span></td></tr>
     <tr class="grouphd"><td colspan="2">▸ 우측 하단 · 포맷 줄 — 매치 상태 (색, 상호배타·1개)</td></tr>
     <tr><td><svg viewBox="0 0 24 24" width="22" height="22" fill="none"><path d="M8.93569 21L3 15.0643L3.84796 14.2164L9.78364 20.152L8.93569 21Z" fill="#FF894A"/><path d="M10.6316 19.3041L4.69591 13.3684L7.23978 10.8245L13.1755 16.7602L10.6316 19.3041Z" fill="#FF894A"/><path d="M21 16.9532L16.9913 12.9444L14.0234 15.9123L8.08773 9.97658L11.0556 7.00874L7.04683 3H21V16.9532Z" fill="#FF894A"/></svg></td><td><span class="nm">진행 유력</span><br><span class="ds">최근 5주간 진행이 많이 된 매치. 앱 헤리티지인 주황 화살표를 그대로 사용. 강/약은 <strong>꼬리 라인 수</strong>로 차등(강=꼬리 2 / 약=꼬리 1).</span></td></tr>
     <tr><td><span class="bdg b-n">N</span></td><td><span class="nm">신규</span><br><span class="ds">최근 새로 열린 매치. 노란 "N" 미니 라벨.</span></td></tr>
     <tr><td><span class="bdg b-cf">확정</span></td><td><span class="nm">확정</span><br><span class="ds">최소 인원이 모여 진행이 확정된 매치. 라이트블루 칩.</span></td></tr>
   </table>
-  <div class="note"><strong>긴급양도</strong>는 메인 리스트에서 제거하고 <strong>매치 상세 페이지에서만</strong> 노출합니다. <strong>MY 배지</strong>도 메인 리스트에서 제거했습니다(내 매치는 이미 인지하는 정보). · 강/약 색 농도 차등은 흰 배경에서 흐린 주황이 묻혀 폐기 → 같은 진한 주황을 유지하고 <strong>꼬리 라인 수</strong>(강 2 / 약 1)로 강도를 표현.</div>
+  <div class="note">강/약 색 농도 차등은 흰 배경에서 흐린 주황이 묻혀 폐기 → 같은 진한 주황을 유지하고 <strong>꼬리 라인 수</strong>(강 2 / 약 1)로 강도를 표현. · 메인 리스트 마크는 매치 카드에 모두 노출되며(긴급양도·MY 포함), <strong>랜딩 페이지(index.html) 상단 요약</strong>은 지면 제약상 핵심 4종(진행 유력·신규·확정·가격)만 보여줍니다.</div>
 </section>
 
 <section>
@@ -109,9 +111,11 @@ a.btn{display:inline-flex;align-items:center;gap:7px;background:var(--ink);color
   <p class="lead">한 카드의 우측은 두 구역으로 나뉩니다. 구역이 곧 의미입니다.</p>
   <div class="zone">
     <div class="zonecard">
-      <div class="zt">우측 상단 · 시간 줄 — 거래</div>
-      <div class="zd">매니저의 "지금 행동"에 직결되는 거래 정보</div>
+      <div class="zt">우측 상단 · 시간 줄 — 거래 · 긴급</div>
+      <div class="zd">매니저의 "지금 행동"에 직결되는 정보</div>
       <div class="swatch"><span class="bdg b-pr">+5,000원</span> 프로모션 금액</div>
+      <div class="swatch"><span class="bdg b-ug">긴급양도</span> 긴급양도</div>
+      <div class="swatch"><span class="bdg b-my">MY</span> 내 매치(단독)</div>
     </div>
     <div class="zonecard">
       <div class="zt">우측 하단 · 포맷 줄 — 매치 상태</div>
@@ -126,10 +130,10 @@ a.btn{display:inline-flex;align-items:center;gap:7px;background:var(--ink);color
 <section>
   <h2><span class="num">4</span>상호배타 · 우선순위</h2>
   <ul>
-    <li><strong>상태는 상호배타</strong> · 진행 유력 / 신규 / 확정은 한 카드에 최대 1개(포맷 줄 우측)</li>
+    <li><strong>상태는 상호배타</strong> · 진행 유력 / 신규 / 확정 / 긴급양도는 한 카드에 최대 1개</li>
+    <li><strong>MY 오버라이드</strong> · MY 매치는 상태·가격·확정 등 다른 모든 배지를 숨기고 MY만 노출</li>
     <li><strong>거래 정보는 병기 가능</strong> · 가격은 상태 마크와 함께 표시(예: 진행 유력 + 5,000원)</li>
-    <li><strong>긴급양도</strong> · 메인 리스트에서는 미노출, 매치 상세 페이지에서만 안내</li>
-    <li><strong>MY</strong> · 메인 리스트 배지에서 제거(내 매치는 이미 인지하고 있는 정보)</li>
+    <li><strong>주의 케이스</strong> · 긴급양도 + 가격이 동시에 뜨면 시간 줄이 빠듯 → 실제 적용 시 "긴급양도 표시되면 가격 숨김" 우선순위 규칙 권장</li>
   </ul>
 </section>
 
@@ -151,15 +155,24 @@ a.btn{display:inline-flex;align-items:center;gap:7px;background:var(--ink);color
   <h2><span class="num">6</span>컴포넌트</h2>
   <h3>① 매치 상태 표시 안내 모달</h3>
   <p>리스트 필터 아래 "매치 상태 표시 안내 ⓘ"로 진입. 진행 유력 · 신규 · 확정 마크의 의미를 설명합니다. <strong>신규 라벨을 처음 본 사용자에게 1회 자동 노출</strong>되며(이후 미노출), 바텀시트 형태로 슬라이드업됩니다.</p>
-  <h3>② 정렬 옵션 — 리스트 정렬 순서 변경</h3>
-  <p>"정렬 ▾" 칩 → 바텀시트로 4개 옵션 제공. 옵션을 선택하면 <strong>리스트의 정렬 순서가 바뀌어</strong> 해당 조건의 매치만 추려 시간순으로 재정렬되고, 상단에 "기준 · N건" 헤더가 표시됩니다. "기본"을 선택하면 날짜별 그룹 정렬로 돌아갑니다.</p>
+  <h3>② 기본 정렬 우선순위</h3>
+  <p>날짜별 그룹 안에서, 매치는 시간순이 아니라 <strong>아래 우선순위로 먼저 정렬</strong>된 뒤 같은 우선순위 안에서 시간순으로 배치됩니다. 매니저가 한 날짜 안에서도 더 중요한 매치를 먼저 보게 하기 위함입니다.</p>
+  <table class="mk">
+    <tr><th>순위</th><th>조건</th></tr>
+    <tr><td>1</td><td><strong>시작 임박 + 긴급양도 / 프로모션</strong> — 곧 시작하거나 긴급양도·금액 혜택이 걸린 매치</td></tr>
+    <tr><td>2</td><td><strong>확정 매치</strong> — 이미 진행이 확정된 매치</td></tr>
+    <tr><td>3</td><td><strong>배지 있는 매치</strong> — 진행 유력 · 신규 · MY 등 마크가 있는 매치</td></tr>
+    <tr><td>4</td><td>그 외 — 일반 매치</td></tr>
+  </table>
+  <h3>③ 정렬 옵션 — 별도 보기 필터</h3>
+  <p>"정렬 ▾" 칩 → 바텀시트로 4개 옵션 제공. 옵션을 선택하면 위 우선순위 조건에 맞는 매치만 추려 <strong>날짜 구분 없이 시간순으로 재정렬</strong>되고, 상단에 "기준 · N건" 헤더가 표시됩니다. "기본"을 선택하면 ②의 우선순위 기반 날짜별 그룹 정렬로 돌아갑니다.</p>
   <div>
-    <span class="flag">기본 (날짜순)</span>
+    <span class="flag">기본 (우선순위+날짜)</span>
     <span class="flag">시작 임박 · 긴급양도/프로모션</span>
     <span class="flag">확정 매치</span>
     <span class="flag">배지 있는 매치</span>
   </div>
-  <h3>③ 매치 상세 페이지 — 배지 대신 섹션</h3>
+  <h3>④ 매치 상세 페이지 — 배지 대신 섹션</h3>
   <p>상세 페이지에서는 진행 유력·신규 <strong>배지를 노출하지 않고</strong>, 대신 설명 섹션으로 안내합니다. 정보를 읽는 맥락(상세)에서는 충분한 설명이 더 적합하기 때문입니다.</p>
   <ul>
     <li><strong>진행 유력 매치</strong> 섹션 · 주황 화살표 + "최근 5주 동안 진행이 많이 된 매치예요."</li>
