@@ -79,6 +79,11 @@ body{background:var(--page);font-family:Pretendard,-apple-system,BlinkMacSystemF
 .sheet-btn-row{display:flex;gap:10px;margin-top:6px}
 .sheet-btn-row .btn-sub{flex:1;padding:14px;border:1px solid var(--bd);border-radius:12px;background:#fff;font-size:15px;font-weight:600;color:#54585E;cursor:pointer}
 .sheet-btn-row .btn-main{flex:1;padding:14px;border:none;border-radius:12px;background:#191A1C;color:#fff;font-size:15px;font-weight:700;cursor:pointer}
+.conf-warn{font-size:14px;color:#191A1C;line-height:1.65;margin:12px 0 16px}
+.conf-warn strong{color:#E5392E}
+.conf-list{margin:0 0 20px;padding:0;list-style:none}
+.conf-list li{font-size:14.5px;color:#54585E;padding:5px 0 5px 16px;position:relative}
+.conf-list li::before{content:"·";position:absolute;left:4px;color:#9AA0A6;font-size:16px}
 .sortopts{margin-top:6px}
 .sopt{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:15px 2px;font-size:15.5px;color:#191A1C;cursor:pointer;border-top:1px solid #F1F3F5}
 .sopt:first-child{border-top:0}
@@ -187,6 +192,18 @@ td{color:#54585E} td.v{font-weight:600;color:#191A1C}
     </div>
   </div>
 
+  <div class="ovl" id="confirmModal">
+    <div class="sheet">
+      <div class="sheet-hd">
+        <span class="sheet-t">매치 선택 주의사항</span>
+        <button class="sheet-x" id="confirmClose"><span style="display:flex" data-icon="close" data-sz="22" data-color="#191A1C"></span></button>
+      </div>
+      <p class="conf-warn"><strong>한 번 선택한 매치는 취소할 수 없어요.</strong> 선택한 구장과 일정을 다시 한 번 확인해 주세요.</p>
+      <ul class="conf-list" id="confirmList"></ul>
+      <label class="no-show-label"><input type="checkbox" id="confirmNoShow"> 하루동안 보지 않기</label>
+      <button class="sheet-cta" id="confirmAccept">신청하기</button>
+    </div>
+  </div>
   <div class="ovl" id="suggestModal">
     <div class="sheet">
       <div class="sheet-hd">
@@ -295,8 +312,10 @@ function upArrow(sz,strong){
   var t2='<path d="M8.93569 21L3 15.0643L3.84796 14.2164L9.78364 20.152L8.93569 21Z" fill="#FF894A"/>';
   var t3='<path d="M7.24 22.7L1.3 16.76L2.15 15.92L8.08 21.85L7.24 22.7Z" fill="#FF894A"/>';
   var t4='<path d="M5.54 24.4L-0.4 18.46L0.45 17.62L6.38 23.55L5.54 24.4Z" fill="#FF894A"/>';
+  var t5='<path d="M3.84 26.1L-2.1 20.16L-1.25 19.32L4.68 25.25L3.84 26.1Z" fill="#FF894A"/>';
+  var t6='<path d="M2.14 27.8L-3.8 21.86L-2.95 21.02L2.98 26.95L2.14 27.8Z" fill="#FF894A"/>';
   if(strong){
-    return '<svg viewBox="-2 0 26 27" width="'+sz+'" height="'+sz+'" fill="none" style="display:block;flex:none">'+head+t1+t2+t3+t4+'</svg>';
+    return '<svg viewBox="-4 0 28 30" width="'+sz+'" height="'+sz+'" fill="none" style="display:block;flex:none">'+head+t1+t2+t3+t4+t5+t6+'</svg>';
   }else{
     return '<svg viewBox="0 0 24 24" width="'+sz+'" height="'+sz+'" fill="none" style="display:block;flex:none">'+head+t1+'</svg>';
   }
@@ -388,7 +407,7 @@ function detailHTML(m){
       +'<div class="dtitle"><span class="nm">'+m.venue+'</span>'+tb+'</div>'
       +'<div class="daddr">'+m.addr+'<span class="achip">'+svg('copy',13,'#4A4F56')+'복사</span><span class="achip">'+svg('map',13,'#4A4F56')+'지도</span></div>'
       +'<p class="dline">'+m.gender+' · '+m.fmt+' · 모든레벨 · '+m.cap+'</p>'
-      +priceHTML+'<button class="dcta">매치 진행하기</button></div>'
+      +priceHTML+'<button class="dcta" data-matchid="'+m.id+'">신청하기</button></div>'
     +s
     +'<div class="dbottom"><a href="#">매치 제외 신청하기 '+svg('chevR',15,'#A0A6AC')+'</a></div>'
     +'<div class="demo">데모 데이터 · 등급 '+m.grade+' · 진행확률 '+pct(m)+' → 배지 '+badgeName+'</div>';
@@ -459,9 +478,9 @@ function getSuggestion(m){
   return null;
 }
 
+/* ── 추천 모달 ── */
 var suggestM=document.getElementById('suggestModal');
-var suggestAcceptCb=null;
-function showSuggest(sugg,fromMatchId){
+function showSuggest(sugg){
   document.getElementById('suggestTitle').textContent=sugg.title.replace('\n',' ');
   document.getElementById('suggestDesc').textContent=sugg.desc;
   document.getElementById('suggestCard').innerHTML=
@@ -469,10 +488,6 @@ function showSuggest(sugg,fromMatchId){
     '<p class="sc-time">'+sugg.time+'</p>'+
     '<p class="sc-venue">'+sugg.venue+' · '+sugg.court+'</p>'+
     '<p class="sc-info">'+sugg.fmt+' · '+sugg.gender+'</p>';
-  /* 아이콘 초기화 */
-  suggestM.querySelectorAll('[data-icon]').forEach(function(el){
-    if(!el.querySelector('svg'))el.insertAdjacentHTML('afterbegin',svg(el.dataset.icon,+el.dataset.sz||20,el.dataset.color||'currentColor'));
-  });
   suggestM.classList.add('open');
 }
 function closeSuggest(){suggestM.classList.remove('open');}
@@ -481,28 +496,70 @@ document.getElementById('suggestDismiss').addEventListener('click',closeSuggest)
 suggestM.addEventListener('click',function(e){if(e.target===suggestM)closeSuggest();});
 document.getElementById('suggestAccept').addEventListener('click',function(){
   closeSuggest();
-  /* 실제 앱에서는 해당 매치 선택 처리. 프로토타입은 알림만 표시 */
-  alert('매치가 선택되었어요! (프로토타입 데모)');
 });
 
+/* ── 확인 모달 ── */
+var confM=document.getElementById('confirmModal');
+var CONF_KEY='plab_conf_hide_until';
+var _pendingSugg=null;
+function shouldShowConf(){
+  try{var u=localStorage.getItem(CONF_KEY);if(u&&Date.now()<+u)return false;}catch(e){}
+  return true;
+}
+function openConfirm(m){
+  document.getElementById('confirmList').innerHTML=
+    '<li>'+m.day+' '+m.time+'</li>'+
+    '<li>'+m.venue+' '+m.court+'</li>';
+  var chk=document.getElementById('confirmNoShow');
+  if(chk) chk.checked=false;
+  /* 아이콘 초기화 */
+  confM.querySelectorAll('[data-icon]').forEach(function(el){
+    if(!el.querySelector('svg'))el.insertAdjacentHTML('afterbegin',svg(el.dataset.icon,+el.dataset.sz||20,el.dataset.color||'currentColor'));
+  });
+  confM.classList.add('open');
+}
+function closeConfirm(){confM.classList.remove('open');}
+document.getElementById('confirmClose').addEventListener('click',closeConfirm);
+confM.addEventListener('click',function(e){if(e.target===confM)closeConfirm();});
+document.getElementById('confirmAccept').addEventListener('click',function(){
+  var chk=document.getElementById('confirmNoShow');
+  if(chk&&chk.checked){try{localStorage.setItem(CONF_KEY,Date.now()+86400000);}catch(e){}}
+  closeConfirm();
+  /* 매치 선택 완료 후 추천 모달 표시 */
+  if(_pendingSugg){
+    var s=_pendingSugg; _pendingSugg=null;
+    setTimeout(function(){showSuggest(s);},400);
+  }
+});
+
+/* ── 상세 / 목록 ── */
 function openDetail(id){
   var m=matches.find(function(x){return x.id===id;});
   detV.innerHTML=detailHTML(m);
   listV.style.display='none';
   detV.style.display='block';
   detV.scrollTop=0;
-  /* 아이콘 렌더 */
   detV.querySelectorAll('[data-icon]').forEach(function(el){
     el.insertAdjacentHTML('afterbegin',svg(el.dataset.icon,+el.dataset.sz||20,el.dataset.color||'currentColor'));
   });
-  /* 제안 모달 */
-  var sugg=getSuggestion(m);
-  if(sugg){setTimeout(function(){showSuggest(sugg,id);},600);}
+  _pendingSugg=getSuggestion(m);
 }
-function closeDetail(){detV.style.display='none';listV.style.display='block';closeSuggest();}
+function closeDetail(){detV.style.display='none';listV.style.display='block';closeSuggest();_pendingSugg=null;}
 document.addEventListener('click',function(e){
   var card=e.target.closest('.mcard'); if(card){openDetail(+card.dataset.id);return;}
   if(e.target.closest('[data-back]')){closeDetail();return;}
+  var dcta=e.target.closest('.dcta');
+  if(dcta){
+    var mid=+dcta.dataset.matchid;
+    var m=matches.find(function(x){return x.id===mid;});
+    if(!m) return;
+    if(shouldShowConf()){openConfirm(m);}
+    else{
+      /* 하루동안 보지 않기 설정 시 바로 선택 완료 */
+      if(_pendingSugg){var s=_pendingSugg;_pendingSugg=null;setTimeout(function(){showSuggest(s);},400);}
+    }
+    return;
+  }
 });
 var likelyOn=false;
 document.getElementById('f-likely').addEventListener('click',function(){likelyOn=!likelyOn;this.classList.toggle('act',likelyOn);renderList(likelyOn);});
