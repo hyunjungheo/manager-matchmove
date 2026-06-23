@@ -201,6 +201,12 @@ td{color:#54585E} td.v{font-weight:600;color:#191A1C}
       </div>
       <p class="conf-warn"><strong>한 번 선택한 매치는 취소할 수 없어요.</strong> 선택한 구장과 일정을 다시 한 번 확인해 주세요.</p>
       <ul class="conf-list" id="confirmList"></ul>
+      <div id="confirmFixedNotes" style="display:none;background:#FFF8F0;border:1px solid #FFD6B0;border-radius:11px;padding:13px 14px;margin-bottom:18px">
+        <ul class="conf-list" style="margin:0;color:#B45309">
+          <li>고정 매치는 매주 같은 요일, 같은 시간 매치에 배정돼요.</li>
+          <li>취소 신청을 하지 않을 경우 자동 연장 돼요.</li>
+        </ul>
+      </div>
       <label class="no-show-label"><input type="checkbox" id="confirmNoShow"> 하루동안 보지 않기</label>
       <button class="sheet-cta" id="confirmAccept">신청하기</button>
     </div>
@@ -468,9 +474,9 @@ function getSuggestion(m){
     return {
       type:'fixed',
       tag:'같은 시간 · 고정 매치',
-      title:m.venue+' '+m.court+'\n고정 매치에 매니저가 없어요',
-      desc:'같은 구장의 고정 매치('+m.time+', 매주 반복)에 매니저가 배정되어 있지 않아요. 고정 매치를 함께 진행하면 안정적인 수익을 얻을 수 있어요.',
-      time:m.time+' (매주)',
+      title:'이 시간 · 구장 고정 매치에 매니저가 없어요.',
+      desc:'같은 구장의 고정 매치에 매니저가 배정되어 있지 않아요.',
+      time:'매주 '+m.day.split(' ').pop()+' '+m.time,
       venue:m.venue,
       court:m.court,
       fmt:m.fmt,
@@ -482,7 +488,9 @@ function getSuggestion(m){
 
 /* ── 추천 모달 ── */
 var suggestM=document.getElementById('suggestModal');
+var _currentSugg=null;
 function showSuggest(sugg){
+  _currentSugg=sugg;
   document.getElementById('suggestTitle').textContent=sugg.title.replace('\n',' ');
   document.getElementById('suggestDesc').textContent=sugg.desc;
   document.getElementById('suggestCard').innerHTML=
@@ -498,20 +506,26 @@ document.getElementById('suggestDismiss').addEventListener('click',closeSuggest)
 suggestM.addEventListener('click',function(e){if(e.target===suggestM)closeSuggest();});
 document.getElementById('suggestAccept').addEventListener('click',function(){
   closeSuggest();
+  if(_currentSugg && _currentSugg.type==='fixed' && _pendingSuggMatch){
+    setTimeout(function(){openConfirm(_pendingSuggMatch,true);},300);
+  }
 });
 
 /* ── 확인 모달 ── */
 var confM=document.getElementById('confirmModal');
 var CONF_KEY='plab_conf_hide_until';
 var _pendingSugg=null;
+var _pendingSuggMatch=null;
 function shouldShowConf(){
   try{var u=localStorage.getItem(CONF_KEY);if(u&&Date.now()<+u)return false;}catch(e){}
   return true;
 }
-function openConfirm(m){
+function openConfirm(m,isFixed){
+  var dayLabel=isFixed?('매주 '+m.day.split(' ').pop()+' '+m.time):m.day+' '+m.time;
   document.getElementById('confirmList').innerHTML=
-    '<li>'+m.day+' '+m.time+'</li>'+
+    '<li>'+dayLabel+'</li>'+
     '<li>'+m.venue+' '+m.court+'</li>';
+  document.getElementById('confirmFixedNotes').style.display=isFixed?'block':'none';
   var chk=document.getElementById('confirmNoShow');
   if(chk) chk.checked=false;
   /* 아이콘 초기화 */
@@ -545,8 +559,9 @@ function openDetail(id){
     el.insertAdjacentHTML('afterbegin',svg(el.dataset.icon,+el.dataset.sz||20,el.dataset.color||'currentColor'));
   });
   _pendingSugg=getSuggestion(m);
+  _pendingSuggMatch=m;
 }
-function closeDetail(){detV.style.display='none';listV.style.display='block';closeSuggest();_pendingSugg=null;}
+function closeDetail(){detV.style.display='none';listV.style.display='block';closeSuggest();_pendingSugg=null;_pendingSuggMatch=null;}
 document.addEventListener('click',function(e){
   var card=e.target.closest('.mcard'); if(card){openDetail(+card.dataset.id);return;}
   if(e.target.closest('[data-back]')){closeDetail();return;}
