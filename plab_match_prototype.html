@@ -121,6 +121,7 @@ body{background:var(--page);font-family:Pretendard,-apple-system,BlinkMacSystemF
 .dprice{font-size:21px;font-weight:800;margin:18px 0 16px}
 .dprice .add{color:var(--blue)} .dprice .dur{font-size:14px;color:var(--mute);font-weight:600}
 .dcta{display:block;width:100%;padding:17px;border:none;border-radius:13px;background:#26282E;color:#fff;font-size:16px;font-weight:700;cursor:pointer}
+.dcta-bar{position:sticky;bottom:0;background:#fff;padding:12px 16px 30px;border-top:1px solid var(--dv);z-index:4}
 .sec{background:#fff;padding:18px;border-bottom:8px solid var(--detail-bg)}
 .sechd{display:flex;align-items:center;gap:9px;margin-bottom:13px}
 .sechd .ci{flex:none;display:flex}
@@ -407,10 +408,11 @@ function detailHTML(m){
       +'<div class="dtitle"><span class="nm">'+m.venue+'</span>'+tb+'</div>'
       +'<div class="daddr">'+m.addr+'<span class="achip">'+svg('copy',13,'#4A4F56')+'복사</span><span class="achip">'+svg('map',13,'#4A4F56')+'지도</span></div>'
       +'<p class="dline">'+m.gender+' · '+m.fmt+' · 모든레벨 · '+m.cap+'</p>'
-      +priceHTML+'<button class="dcta" data-matchid="'+m.id+'">신청하기</button></div>'
+      +priceHTML+'</div>'
     +s
     +'<div class="dbottom"><a href="#">매치 제외 신청하기 '+svg('chevR',15,'#A0A6AC')+'</a></div>'
-    +'<div class="demo">데모 데이터 · 등급 '+m.grade+' · 진행확률 '+pct(m)+' → 배지 '+badgeName+'</div>';
+    +'<div class="demo">데모 데이터 · 등급 '+m.grade+' · 진행확률 '+pct(m)+' → 배지 '+badgeName+'</div>'
+    +'<div class="dcta-bar"><button class="dcta" data-matchid="'+m.id+'">신청하기</button></div>';
 }
 
 function renderTable(){
@@ -453,8 +455,8 @@ function getSuggestion(m){
     return {
       type:'next',
       tag:'같은 구장 · 다음 타임',
-      title:m.venue+' '+m.court+' 다음 타임에\n매니저가 없어요',
-      desc:'선택한 매치 바로 다음 시간대('+nextTime+')에 매니저가 배정되지 않았어요. 연속으로 진행하면 추가 정산을 받을 수 있어요.',
+      title:'동일 구장 다음 타임 매니저가 없어요',
+      desc:'선택한 매치 바로 다음 시간대('+nextTime+')에 매니저가 배정되지 않았어요.',
       time:nextTime,
       venue:m.venue,
       court:m.court,
