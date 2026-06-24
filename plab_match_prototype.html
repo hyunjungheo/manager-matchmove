@@ -336,9 +336,11 @@ function upArrow(sz,strong){
   var t5='<path d="M4.62 25.30L-1.32 19.36L-0.40 18.44L5.54 24.38Z" fill="#FF894A"/>';
   var t6='<path d="M3.06 26.86L-2.88 20.92L-2.24 20.28L3.70 26.22Z" fill="#FF894A"/>';
   if(strong){
+    /* s1·a1: 꼬리 6개 — 왼쪽 이모지 */
     return '<svg viewBox="-4 0 25 30" width="'+sz+'" height="'+sz+'" fill="none" style="display:block;flex:none">'+head+t1+t2+t3+t4+t5+t6+'</svg>';
   }else{
-    return '<svg viewBox="-4 0 25 30" width="'+sz+'" height="'+sz+'" fill="none" style="display:block;flex:none">'+head+t1+'</svg>';
+    /* a2·a3: 머리만 — 오른쪽 이모지 */
+    return '<svg viewBox="5 1 18 18" width="'+sz+'" height="'+sz+'" fill="none" style="display:block;flex:none">'+head+'</svg>';
   }
 }
 
