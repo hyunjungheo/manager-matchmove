@@ -329,8 +329,8 @@ function pct(m){return m.prob!=null?Math.round(m.prob*100)+'%':'데이터 없음
 function upArrow(sz,strong){
   if(strong==null)strong=true;
   if(strong){
-    /* s1·a1: 왼쪽 이모지 */
-    return '<svg width="'+sz+'" height="'+sz+'" viewBox="0 0 25 25" fill="none" style="display:block;flex:none">'
+    /* s1·a1: 왼쪽 이모지 — viewBox 4 3 18 18로 center arrow 크기를 오른쪽과 동일하게 */
+    return '<svg width="'+sz+'" height="'+sz+'" viewBox="4 3 18 18" fill="none" style="display:block;flex:none">'
       +'<path d="M3.60588 11.9304L0 8.33333L0.333333 8L2.27254 9.93042L3.93921 11.5971L3.60588 11.9304Z" fill="#FFA97C"/>'
       +'<path d="M9.83203 10L7.53363 7.7016L5.83203 9.40321L2.42883 6L4.13043 4.2984L1.83203 2H9.83203V10Z" fill="#FFA97C"/>'
       +'<path d="M4.36133 10.9759L0.861328 7.51449L1.36133 7.0255L1.86133 6.5255L5.36133 9.97594L4.86133 10.4759L4.36133 10.9759Z" fill="#FFA97C"/>'
