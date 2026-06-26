@@ -238,6 +238,7 @@ td{color:#54585E} td.v{font-weight:600;color:#191A1C}
       </div>
       <p class="sheet-sub" id="suggestDesc"></p>
       <div class="sugg-card" id="suggestCard"></div>
+      <label class="no-show-label"><input type="checkbox" id="suggestNoShow"> 하루동안 보지 않기</label>
       <div class="sheet-btn-row">
         <button class="btn-sub" id="suggestDismiss">괜찮아요</button>
         <button class="btn-main" id="suggestAccept">이 매치 선택하기</button>
@@ -575,9 +576,15 @@ function getSuggestion(m){
 
 /* ── 추천 모달 ── */
 var suggestM=document.getElementById('suggestModal');
+var SUGG_KEY='plab_sugg_hide_until';
 var _currentSugg=null;
 var _currentSuggOrigM=null; /* 추천 모달을 띄운 원본 매치 */
+function shouldShowSugg(){
+  try{var u=localStorage.getItem(SUGG_KEY);if(u&&Date.now()<+u)return false;}catch(e){}
+  return true;
+}
 function showSuggest(sugg,origM){
+  if(!shouldShowSugg()) return;
   _currentSugg=sugg;
   _currentSuggOrigM=origM||null;
   document.getElementById('suggestTitle').textContent=sugg.title.replace('\n',' ');
@@ -598,9 +605,15 @@ function showSuggest(sugg,origM){
   document.getElementById('suggestCard').innerHTML=
     (origM?'<div class="sc-row"><span class="sc-lbl">내가 선택한 매치</span><span class="sc-val">'+origLine+'</span></div>':'')+
     '<div class="sc-row"><span class="sc-lbl sc-lbl-need">매니저가 필요한 매치</span><span class="sc-val">'+sugg.time+' '+sugg.venue+' '+sugg.court+'</span></div>';
+  var chk=document.getElementById('suggestNoShow');
+  if(chk) chk.checked=false;
   suggestM.classList.add('open');
 }
-function closeSuggest(){suggestM.classList.remove('open');}
+function closeSuggest(){
+  var chk=document.getElementById('suggestNoShow');
+  if(chk&&chk.checked){try{localStorage.setItem(SUGG_KEY,Date.now()+86400000);}catch(e){}}
+  suggestM.classList.remove('open');
+}
 document.getElementById('suggestClose').addEventListener('click',closeSuggest);
 document.getElementById('suggestDismiss').addEventListener('click',closeSuggest);
 suggestM.addEventListener('click',function(e){if(e.target===suggestM)closeSuggest();});
