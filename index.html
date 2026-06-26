@@ -570,12 +570,16 @@ function showSuggest(sugg,origM){
   _currentSugg=sugg;
   _currentSuggOrigM=origM||null;
   document.getElementById('suggestTitle').textContent=sugg.title.replace('\n',' ');
-  document.getElementById('suggestDesc').textContent=sugg.desc;
-  var dayLabel=origM?origM.day+' · '+sugg.time:sugg.time;
+  var descText=sugg.desc;
+  if(origM){
+    if(sugg.type==='next') descText='방금 선택한 '+origM.venue+' '+origM.court+' 바로 다음 타임이에요.';
+    else if(sugg.type==='fixed') descText='방금 선택한 '+origM.venue+' '+origM.court+'과 같은 시간대 고정 매치예요.';
+  }
+  document.getElementById('suggestDesc').textContent=descText;
   var cardFmt=(sugg.fmt||origM&&origM.fmt)||'';
   var cardGender=(sugg.gender||origM&&origM.gender)||'';
   document.getElementById('suggestCard').innerHTML=
-    '<p class="sc-time">'+dayLabel+'</p>'+
+    '<p class="sc-time">'+sugg.time+'</p>'+
     '<p class="sc-time">'+sugg.venue+' '+sugg.court+'</p>'+
     (cardFmt||cardGender?'<p class="sc-info">'+(cardFmt&&cardGender?cardFmt+' · '+cardGender:cardFmt||cardGender)+'</p>':'');
   suggestM.classList.add('open');
