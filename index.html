@@ -623,7 +623,7 @@ var _pendingSugg=null;
 var _pendingSuggMatch=null;
 var selectedIds=[];
 function shouldShowConf(){
-  try{var u=localStorage.getItem(CONF_KEY);if(u&&Date.now()<+u)return false;}catch(e){}
+  try{localStorage.removeItem(CONF_KEY);}catch(e){}
   return true;
 }
 function openConfirm(m,isFixed){
