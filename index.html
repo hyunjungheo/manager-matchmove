@@ -548,8 +548,21 @@ function getSuggestion(m){
       gender:m.gender
     };
   }
-  /* 기본: 다음 타임 매니저 필요 안내 (모든 매치) */
+  /* 기본: next/fixed 5:5 교대 */
   if(!m.my){
+    if(m.id%2===0){
+      return {
+        type:'fixed',
+        tag:'같은 시간 · 고정 매치',
+        title:'같은 구장 다음 타임에 매니저가 필요해요',
+        desc:'같은 구장의 고정 매치에 매니저가 배정되어 있지 않아요.',
+        time:'매주 '+m.day.split(' ').pop()+' '+m.time,
+        venue:m.venue,
+        court:m.court,
+        fmt:m.fmt,
+        gender:m.gender
+      };
+    }
     return {
       type:'next',
       tag:'같은 구장 · 다음 타임',
