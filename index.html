@@ -267,6 +267,11 @@ td{color:#54585E} td.v{font-weight:600;color:#191A1C}
   </div>
   <div id="detailView" class="scroll"></div>
   <div id="fixedListView" class="scroll">
+    <div class="statusbar"><span>4:01</span><span class="rt"><span style="display:flex" data-icon="signal" data-sz="16"></span>LTE<span class="batt">50<span data-icon="bolt" data-sz="11"></span></span></span></div>
+    <div class="appbar">
+      <div class="logo">plab<span>/manager</span></div>
+      <div class="ic"><span data-icon="search" data-sz="23"></span><span data-icon="calendar" data-sz="23"></span><span data-icon="bell" data-sz="23"></span><span data-icon="user" data-sz="23"></span></div>
+    </div>
     <div class="fl-bar"><button id="fixedListBack"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6l6 6"/></svg></button><span class="fl-t">고정 매치 정기 접수</span></div>
     <div class="fl-callout">
       <p class="fl-callout-title">고정매치 정기 접수</p>
@@ -791,9 +796,20 @@ function openDetail(id){
   _pendingSugg=getSuggestion(m);
   _pendingSuggMatch=m;
 }
-function closeDetail(){detV.style.display='none';listV.style.display='block';closeSuggest();_pendingSugg=null;_pendingSuggMatch=null;}
+function closeDetail(){
+  detV.style.display='none';
+  if(_prevView==='fixedList'){flV.style.display='block';_prevView='list';}
+  else{listV.style.display='block';}
+  closeSuggest();_pendingSugg=null;_pendingSuggMatch=null;
+}
 document.addEventListener('click',function(e){
-  var card=e.target.closest('.mcard'); if(card){openDetail(+card.dataset.id);return;}
+  var card=e.target.closest('.mcard');
+  if(card){
+    var cid=+card.dataset.id;
+    if(matches.find(function(x){return x.id===cid;})) openDetail(cid);
+    else openDetailFromFixed(cid);
+    return;
+  }
   if(e.target.closest('[data-back]')){closeDetail();return;}
   var dcta=e.target.closest('.dcta');
   if(dcta){
@@ -830,24 +846,19 @@ lblM.addEventListener('click',function(e){if(e.target===lblM||e.target.closest('
 
 /* ── 고정 매치 데이터 ── */
 var fixedMatches=[
-  {id:101,venue:'서울 HM풋살파크 동대문점',court:'B구장',day:'월요일',time:'11:00',fmt:'6vs6',gender:'남녀모두',level:'아마추어',base:24000,addon:5000,dur:'2시간',addr:'서울 동대문구 장안로 1',slots:2,laundry:true},
-  {id:102,venue:'서울 HM풋살파크 동대문점',court:'B구장',day:'화요일',time:'11:00',fmt:'6vs6',gender:'남녀모두',level:'아마추어',base:24000,addon:5000,dur:'2시간',addr:'서울 동대문구 장안로 1',slots:1,laundry:true},
-  {id:103,venue:'서울 HM풋살파크 동대문점',court:'B구장',day:'수요일',time:'11:00',fmt:'6vs6',gender:'남녀모두',level:'아마추어',base:24000,addon:5000,dur:'2시간',addr:'서울 동대문구 장안로 1',slots:3,laundry:true},
-  {id:104,venue:'서울 노원 R 풋살장',court:'B구장',day:'화요일',time:'11:00',fmt:'6vs6',gender:'남녀모두',level:'아마추어',base:22000,addon:5000,dur:'2시간',addr:'서울 노원구 동일로 200',slots:2},
-  {id:105,venue:'서울 노원 R 풋살장',court:'B구장',day:'화요일',time:'11:00',fmt:'6vs6',gender:'남녀모두',level:'아마추어',base:22000,dur:'2시간',addr:'서울 노원구 동일로 200',slots:0},
-  {id:106,venue:'서울 노원 R 풋살장',court:'B구장',day:'화요일',time:'11:00',fmt:'6vs6',gender:'남녀모두',level:'아마추어',base:22000,dur:'2시간',addr:'서울 노원구 동일로 200',slots:1},
-  {id:107,venue:'서울 도봉 라온 풋살장',court:'B구장',day:'화요일',time:'11:00',fmt:'6vs6',gender:'남녀모두',level:'아마추어',base:23000,dur:'2시간',addr:'서울 도봉구 도봉로 500',slots:2},
-  {id:108,venue:'서울 도봉 라온 풋살장',court:'B구장',day:'화요일',time:'11:00',fmt:'6vs6',gender:'남녀모두',level:'아마추어',base:23000,dur:'2시간',addr:'서울 도봉구 도봉로 500',slots:1},
-  {id:109,venue:'서울 도봉 라온 풋살장',court:'B구장',day:'화요일',time:'11:00',fmt:'6vs6',gender:'남녀모두',level:'아마추어',base:23000,dur:'2시간',addr:'서울 도봉구 도봉로 500',slots:0},
+  {id:101,venue:'서울 HM풋살파크 동대문점',court:'B구장',day:'7월 7일 월요일',time:'11:00',fmt:'6vs6',gender:'남녀모두',cap:'12명',grade:'B',pct:72,base:24000,price:5000,dur:'2시간',addr:'서울 동대문구 장안로 1',laundry:true},
+  {id:102,venue:'서울 HM풋살파크 동대문점',court:'B구장',day:'7월 8일 화요일',time:'11:00',fmt:'6vs6',gender:'남녀모두',cap:'12명',grade:'B',pct:68,base:24000,price:5000,dur:'2시간',addr:'서울 동대문구 장안로 1',laundry:true},
+  {id:103,venue:'서울 HM풋살파크 동대문점',court:'B구장',day:'7월 9일 수요일',time:'11:00',fmt:'6vs6',gender:'남녀모두',cap:'12명',grade:'A',pct:85,base:24000,price:5000,dur:'2시간',addr:'서울 동대문구 장안로 1',laundry:true},
+  {id:104,venue:'서울 노원 R 풋살장',court:'B구장',day:'7월 8일 화요일',time:'11:00',fmt:'6vs6',gender:'남녀모두',cap:'12명',grade:'B',pct:70,base:22000,price:5000,dur:'2시간',addr:'서울 노원구 동일로 200'},
+  {id:105,venue:'서울 노원 R 풋살장',court:'B구장',day:'7월 15일 화요일',time:'11:00',fmt:'6vs6',gender:'남녀모두',cap:'12명',grade:'C',pct:40,base:22000,dur:'2시간',addr:'서울 노원구 동일로 200'},
+  {id:106,venue:'서울 노원 R 풋살장',court:'B구장',day:'7월 22일 화요일',time:'11:00',fmt:'6vs6',gender:'남녀모두',cap:'12명',grade:'B',pct:60,base:22000,dur:'2시간',addr:'서울 노원구 동일로 200'},
+  {id:107,venue:'서울 도봉 라온 풋살장',court:'B구장',day:'7월 8일 화요일',time:'11:00',fmt:'6vs6',gender:'남녀모두',cap:'12명',grade:'A',pct:80,base:23000,dur:'2시간',addr:'서울 도봉구 도봉로 500'},
+  {id:108,venue:'서울 도봉 라온 풋살장',court:'B구장',day:'7월 15일 화요일',time:'11:00',fmt:'6vs6',gender:'남녀모두',cap:'12명',grade:'B',pct:65,base:23000,dur:'2시간',addr:'서울 도봉구 도봉로 500'},
+  {id:109,venue:'서울 도봉 라온 풋살장',court:'B구장',day:'7월 22일 화요일',time:'11:00',fmt:'6vs6',gender:'남녀모두',cap:'12명',grade:'B',pct:55,base:23000,dur:'2시간',addr:'서울 도봉구 도봉로 500'},
 ];
 
 var flV=document.getElementById('fixedListView');
 var fdV=document.getElementById('fixedDetailView');
-
-/* 초록 잎 아이콘 */
-var leafSVG='<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#22863A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V12M12 12C12 7 7 4 3 5c0 5 3 9 9 7M12 12C12 7 17 4 21 5c0 5-3 9-9 7"/></svg>';
-/* 파란 핀 아이콘 */
-var pinSVG='<svg viewBox="0 0 24 24" width="14" height="14" fill="none"><path d="M12 2L9 9H3l5 4-2 7 6-4 6 4-2-7 5-4h-6L12 2z" fill="#2C6FF0"/></svg>';
 
 function renderFixedCards(){
   /* 구장별 그룹 */
@@ -856,36 +867,39 @@ function renderFixedCards(){
   var html=venues.map(function(v){
     var grp=fixedMatches.filter(function(m){return m.venue===v;});
     var hasLaundry=grp.some(function(m){return m.laundry;});
-    var cards=grp.map(function(m){
-      var selected=selectedFixedIds&&selectedFixedIds.indexOf(m.id)>=0;
-      return '<div class="fl-mc'+(selected?' on':'')+'" data-fid="'+m.id+'">'
-        +'<div class="fl-mc-top">'
-          +'<span class="fl-mc-time">'+m.day.charAt(0)+' '+m.time+'</span>'
-          +(m.addon?'<span class="fl-mc-price">+'+m.addon.toLocaleString()+'원</span>':'')
-        +'</div>'
-        +'<div class="fl-mc-court">'+m.court+'</div>'
-        +'<div class="fl-mc-fmt">'+m.fmt+' · '+m.gender+' '+leafSVG+' '+pinSVG+'</div>'
-      +'</div>';
-    }).join('');
-    return '<div class="fl-venue-grp">'
-      +'<div class="fl-venue-hd">'+v+(hasLaundry?'<span class="fl-venue-badge">런드리</span>':'')+'</div>'
-      +'<div class="fl-row">'+cards+'</div>'
+    var cards=grp.map(cardHTML).join('');
+    return '<div class="daygrp">'
+      +'<div class="dayhd" style="display:flex;align-items:center;gap:8px">'+v+(hasLaundry?'<span class="bdg b-ld">런드리</span>':'')+'</div>'
+      +'<div class="row">'+cards+'</div>'
     +'</div>';
   }).join('');
   document.getElementById('fixedListBody').innerHTML=html;
-  flV.querySelectorAll('.fl-mc').forEach(function(el){
-    el.addEventListener('click',function(){openFixedDetail(+el.dataset.fid);});
+  flV.querySelectorAll('.mcard').forEach(function(el){
+    el.addEventListener('click',function(){openDetailFromFixed(+el.dataset.id);});
   });
 }
 
-var selectedFixedIds=[];
+var _prevView='list';
+
+function openDetailFromFixed(id){
+  var m=fixedMatches.find(function(x){return x.id===id;});
+  if(!m)return;
+  _prevView='fixedList';
+  detV.innerHTML=detailHTML(m);
+  flV.style.display='none';
+  detV.style.display='block';
+  detV.scrollTop=0;
+  detV.querySelectorAll('[data-icon]').forEach(function(el){
+    el.insertAdjacentHTML('afterbegin',svg(el.dataset.icon,+el.dataset.sz||20,el.dataset.color||'currentColor'));
+  });
+  _pendingSugg=null; _pendingSuggMatch=null;
+}
 
 function openFixedList(){
   listV.style.display='none';
   renderFixedCards();
   flV.style.display='block';
   flV.scrollTop=0;
-  /* 필터 칩 아이콘 초기화 */
   flV.querySelectorAll('[data-icon]').forEach(function(el){
     if(!el.querySelector('svg'))el.insertAdjacentHTML('afterbegin',svg(el.dataset.icon,+el.dataset.sz||20,el.dataset.color||'currentColor'));
   });
