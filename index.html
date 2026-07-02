@@ -97,11 +97,11 @@ body{background:var(--page);font-family:Pretendard,-apple-system,BlinkMacSystemF
 .ichip{width:21px;height:21px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;flex:none}
 
 /* ── 고정 매치 배너 ── */
-.fixed-banner{margin:10px 16px 6px;border-radius:14px;background:#16181D;padding:0 18px;cursor:pointer;display:flex;align-items:center;gap:12px;height:56px;position:relative;overflow:hidden}
-.fb-left{flex:none;display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.1)}
+.fixed-banner{background:#fff;border-bottom:1px solid var(--bd);padding:0 18px;cursor:pointer;display:flex;align-items:center;gap:10px;height:52px}
+.fb-left{flex:none;display:flex;align-items:center;justify-content:center;width:28px;height:28px}
 .fb-text{flex:1;min-width:0}
-.fb-title{font-size:14px;font-weight:700;color:#fff;margin:0;letter-spacing:-.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.fb-icon{flex:none;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.5)}
+.fb-title{font-size:14px;font-weight:700;color:#191A1C;margin:0;letter-spacing:-.2px}
+.fb-icon{flex:none;display:flex;align-items:center;justify-content:center;color:#A0A6AC}
 /* ── 정기 접수 페이지 ── */
 #fixedListView{display:none;background:#F1F3F5}
 .fl-bar{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:10px;background:#16181D;padding:13px 14px;border-bottom:1px solid rgba(255,255,255,.08)}
@@ -234,6 +234,17 @@ td{color:#54585E} td.v{font-weight:600;color:#191A1C}
       <div class="logo">plab<span>/manager</span></div>
       <div class="ic"><span data-icon="search" data-sz="23"></span><span data-icon="calendar" data-sz="23"></span><span data-icon="bell" data-sz="23"><span class="dot"></span></span><span data-icon="user" data-sz="23"></span></div>
     </div>
+    <div class="fixed-banner" id="fixedBanner">
+      <div class="fb-left">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2L9 9H3l5 4-2 7 6-4 6 4-2-7 5-4h-6L12 2z" fill="#2C6FF0"/>
+        </svg>
+      </div>
+      <div class="fb-text">
+        <p class="fb-title">고정매치 정기 접수가 시작되었어요</p>
+      </div>
+      <div class="fb-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#A0A6AC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6l-6 6"/></svg></div>
+    </div>
     <div id="upcomingSection" style="display:none"></div>
     <div class="filters">
       <div class="chip vest"><span data-icon="vest" data-sz="18" data-color="#A0A6AC"></span></div>
@@ -244,21 +255,6 @@ td{color:#54585E} td.v{font-weight:600;color:#191A1C}
       <div class="chip">시간 <span style="display:flex" data-icon="chevD" data-sz="15" data-color="#A0A6AC"></span></div>
     </div>
     <div class="lblguide" id="openLblModal">매치 상태 표시 안내 <span style="display:flex" data-icon="info" data-sz="15" data-color="#A0A6AC"></span></div>
-    <div class="fixed-banner" id="fixedBanner">
-      <div class="fb-left">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-          <circle cx="12" cy="12" r="9" stroke="#fff" stroke-width="1.8"/>
-          <path d="M12 3C12 3 9 7 9 12C9 17 12 21 12 21" stroke="#fff" stroke-width="1.4"/>
-          <path d="M12 3C12 3 15 7 15 12C15 17 12 21 12 21" stroke="#fff" stroke-width="1.4"/>
-          <path d="M3 12H21" stroke="#fff" stroke-width="1.4"/>
-          <path d="M4 8H20M4 16H20" stroke="#fff" stroke-width="1.2" stroke-dasharray="2 2"/>
-        </svg>
-      </div>
-      <div class="fb-text">
-        <p class="fb-title">고정 매치 정기 접수가 시작되었어요</p>
-      </div>
-      <div class="fb-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6l-6 6"/></svg></div>
-    </div>
     <div id="listBody"></div>
     <div class="promo"><span class="tk" data-icon="ticket" data-sz="20"></span><span class="pt">5매치 이상 진행하고 플랩 이용권 받아요</span><span class="cv" data-icon="chevU" data-sz="18" data-color="#A0A6AC"></span></div>
   </div>
