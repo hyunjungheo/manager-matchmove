@@ -846,15 +846,15 @@ lblM.addEventListener('click',function(e){if(e.target===lblM||e.target.closest('
 
 /* ── 고정 매치 데이터 ── */
 var fixedMatches=[
-  {id:101,venue:'서울 HM풋살파크 동대문점',court:'B구장',day:'7월 7일 월요일',time:'11:00',fmt:'6vs6',gender:'남녀모두',cap:'12명',grade:'B',pct:72,base:24000,price:5000,dur:'2시간',addr:'서울 동대문구 장안로 1',laundry:true},
-  {id:102,venue:'서울 HM풋살파크 동대문점',court:'B구장',day:'7월 8일 화요일',time:'11:00',fmt:'6vs6',gender:'남녀모두',cap:'12명',grade:'B',pct:68,base:24000,price:5000,dur:'2시간',addr:'서울 동대문구 장안로 1',laundry:true},
-  {id:103,venue:'서울 HM풋살파크 동대문점',court:'B구장',day:'7월 9일 수요일',time:'11:00',fmt:'6vs6',gender:'남녀모두',cap:'12명',grade:'A',pct:85,base:24000,price:5000,dur:'2시간',addr:'서울 동대문구 장안로 1',laundry:true},
-  {id:104,venue:'서울 노원 R 풋살장',court:'B구장',day:'7월 8일 화요일',time:'11:00',fmt:'6vs6',gender:'남녀모두',cap:'12명',grade:'B',pct:70,base:22000,price:5000,dur:'2시간',addr:'서울 노원구 동일로 200'},
-  {id:105,venue:'서울 노원 R 풋살장',court:'B구장',day:'7월 15일 화요일',time:'11:00',fmt:'6vs6',gender:'남녀모두',cap:'12명',grade:'C',pct:40,base:22000,dur:'2시간',addr:'서울 노원구 동일로 200'},
-  {id:106,venue:'서울 노원 R 풋살장',court:'B구장',day:'7월 22일 화요일',time:'11:00',fmt:'6vs6',gender:'남녀모두',cap:'12명',grade:'B',pct:60,base:22000,dur:'2시간',addr:'서울 노원구 동일로 200'},
-  {id:107,venue:'서울 도봉 라온 풋살장',court:'B구장',day:'7월 8일 화요일',time:'11:00',fmt:'6vs6',gender:'남녀모두',cap:'12명',grade:'A',pct:80,base:23000,dur:'2시간',addr:'서울 도봉구 도봉로 500'},
-  {id:108,venue:'서울 도봉 라온 풋살장',court:'B구장',day:'7월 15일 화요일',time:'11:00',fmt:'6vs6',gender:'남녀모두',cap:'12명',grade:'B',pct:65,base:23000,dur:'2시간',addr:'서울 도봉구 도봉로 500'},
-  {id:109,venue:'서울 도봉 라온 풋살장',court:'B구장',day:'7월 22일 화요일',time:'11:00',fmt:'6vs6',gender:'남녀모두',cap:'12명',grade:'B',pct:55,base:23000,dur:'2시간',addr:'서울 도봉구 도봉로 500'},
+  {id:101,venue:'서울 HM풋살파크 동대문점',court:'B구장',day:'7월 7일 월요일',time:'11:00',fmt:'6vs6',gender:'남녀모두',cap:'12명',grade:'B',prob:0.72,base:24000,price:5000,dur:'2시간',addr:'서울 동대문구 장안로 1',laundry:true},
+  {id:102,venue:'서울 HM풋살파크 동대문점',court:'B구장',day:'7월 8일 화요일',time:'11:00',fmt:'6vs6',gender:'남녀모두',cap:'12명',grade:'B',prob:0.68,base:24000,price:5000,dur:'2시간',addr:'서울 동대문구 장안로 1',laundry:true},
+  {id:103,venue:'서울 HM풋살파크 동대문점',court:'B구장',day:'7월 9일 수요일',time:'11:00',fmt:'6vs6',gender:'남녀모두',cap:'12명',grade:'A',prob:0.85,base:24000,price:5000,dur:'2시간',addr:'서울 동대문구 장안로 1',laundry:true},
+  {id:104,venue:'서울 노원 R 풋살장',court:'B구장',day:'7월 8일 화요일',time:'11:00',fmt:'6vs6',gender:'남녀모두',cap:'12명',grade:'B',prob:0.70,base:22000,price:5000,dur:'2시간',addr:'서울 노원구 동일로 200'},
+  {id:105,venue:'서울 노원 R 풋살장',court:'B구장',day:'7월 15일 화요일',time:'11:00',fmt:'6vs6',gender:'남녀모두',cap:'12명',grade:'C',prob:0.40,base:22000,dur:'2시간',addr:'서울 노원구 동일로 200'},
+  {id:106,venue:'서울 노원 R 풋살장',court:'B구장',day:'7월 22일 화요일',time:'11:00',fmt:'6vs6',gender:'남녀모두',cap:'12명',grade:'B',prob:0.62,base:22000,dur:'2시간',addr:'서울 노원구 동일로 200'},
+  {id:107,venue:'서울 도봉 라온 풋살장',court:'B구장',day:'7월 8일 화요일',time:'11:00',fmt:'6vs6',gender:'남녀모두',cap:'12명',grade:'A',prob:0.83,base:23000,dur:'2시간',addr:'서울 도봉구 도봉로 500'},
+  {id:108,venue:'서울 도봉 라온 풋살장',court:'B구장',day:'7월 15일 화요일',time:'11:00',fmt:'6vs6',gender:'남녀모두',cap:'12명',grade:'B',prob:0.65,base:23000,dur:'2시간',addr:'서울 도봉구 도봉로 500'},
+  {id:109,venue:'서울 도봉 라온 풋살장',court:'B구장',day:'7월 22일 화요일',time:'11:00',fmt:'6vs6',gender:'남녀모두',cap:'12명',grade:'B',prob:0.50,base:23000,dur:'2시간',addr:'서울 도봉구 도봉로 500'},
 ];
 
 var flV=document.getElementById('fixedListView');
